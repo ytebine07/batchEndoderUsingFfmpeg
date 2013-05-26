@@ -15,10 +15,10 @@ HOWTOUSE=$HOWTOUSE'---------------------------------------'
 #   アウトプットディレクトリ設定
 #---------------------------
 # 引数の数をチェック
-#if [ $# -ne 2 ];then
-    #echo $HOWTOUSE
-    #exit 1
-#fi
+if [ $# -ne 2 ];then
+    echo $HOWTOUSE
+    exit 1
+fi
 
 # input_fileの存在チェック
 if [ ! -e $1 ];then
@@ -69,10 +69,10 @@ SOUND='-acodec libfaac -b:a 128k' #動く iPhone再生可
 SOUND='-acodec libfaac -b:a 256k' #動く iPhone再生可
 
 #エンコード後のサイズ設定
-SIZE='-s hd480'     #852x458
 #SIZE='-s hb720'     #1280x720 なんか使えない
 SIZE='-s ega'       #640x350
 SIZE=''             #オリジナルサイズのまま
+SIZE='-s hd480'     #852x458
 
 #ビットレートの設定
 BITRATE='-b:a 1000k'
@@ -85,10 +85,10 @@ FILTER=''          #何もなければこれ
 #FILTER='-vf '
 #FILTER=$FILTER'"drawtext='
 ##FILTER=$FILTER'drawtext='
-#FILTER=$FILTER'fontfile=/System/Library/Fonts/ThonburiBold.ttf'
+#FILTER=$FILTER'fontfile=/Library/Fonts/Arial\ Bold.ttf'
 #FILTER=$FILTER':fontcolor=ffffff@0.5'  #@で透過率設定
-#FILTER=$FILTER":text='HELLO'"
-#FILTER=$FILTER":fontsize=50:x=20:y=650"
+#FILTER=$FILTER":text='2013JN 1A Semifinal Reiki Sekiya'"
+#FILTER=$FILTER":fontsize=30:x=20:y=20"
 ##FILTER=$FILTER"," #複数指定の場合、カンマでつないで設定を書く
 #FILTER=$FILTER'"'
 
