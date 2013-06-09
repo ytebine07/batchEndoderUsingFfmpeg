@@ -70,15 +70,18 @@ SOUND='-acodec libfaac -b:a 256k' #動く iPhone再生可
 #エンコード後のサイズ設定
 #SIZE='-s hb720'     #1280x720 なんか使えない
 SIZE='-s ega'       #640x350
-SIZE=''             #オリジナルサイズのまま
 SIZE='-s hd480'     #852x458
+SIZE=''             #オリジナルサイズのまま
 
 #ビットレートの設定
 BITRATE='-b:a 1000k'
 BITRATE='-b:a 2000k'
+BITRATE='-b:v 3000k'
+BITRATE='-b:v 4000k'
 
 #フィルター設定
 FILTER=''          #何もなければこれ
+FILTER='-vf "mp=eq=5:0"'          #明るさ調整
 
 #動画にテキストを入れる
 #FILTER='-vf '
@@ -97,7 +100,7 @@ OUT_OPTION="${FILTER} ${CODEC} ${BITRATE} ${SOUND} ${SIZE}"
 #---------------------------
 #COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -i ./logo.jpg -filter_complex \"overlay=10:main_h-overlay_h-10\" ${OUT_OPTION} ${OUTPUT_FILE}"
 #COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -i ./logo.jpg -filter_complex \"overlay=main_w-overlay_w-10:main_h-overlay_h-10,${OUT_OPTION} ${OUTPUT_FILE}"
-COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
+COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -qscale 0 ${OUT_OPTION} ${OUTPUT_FILE}"
 
 echo "[exec command]-----------------------"
 echo $COMMAND
