@@ -78,10 +78,11 @@ BITRATE='-b:a 1000k'
 BITRATE='-b:a 2000k'
 BITRATE='-b:v 3000k'
 BITRATE='-b:v 4000k'
+BITRATE='-b:v 5000k'
 
 #フィルター設定
-FILTER=''          #何もなければこれ
 FILTER='-vf "mp=eq=5:0"'          #明るさ調整
+FILTER=''          #何もなければこれ
 
 #動画にテキストを入れる
 #FILTER='-vf '
