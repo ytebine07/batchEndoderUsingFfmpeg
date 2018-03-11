@@ -4,7 +4,7 @@
 #---------------------------
 # 設定系
 #---------------------------
-FFMPEG='/opt/local/bin/ffmpeg'
+FFMPEG='ffmpeg'
 HOWTOUSE='[How to Use]---------------------------\n'
 HOWTOUSE=$HOWTOUSE'  ./encode.sh [input_file] [output_dir]\n'
 HOWTOUSE=$HOWTOUSE'---------------------------------------'
@@ -64,8 +64,8 @@ CODEC='-vcodec libx264'
 
 #音声設定
 SOUND='-acodec ac3' #動く iPhoneで再生出来ない
-SOUND='-acodec libfaac -b:a 128k' #動く iPhone再生可
-SOUND='-acodec libfaac -b:a 256k' #動く iPhone再生可
+#SOUND='-acodec libfaac -b:a 128k' #動く iPhone再生可
+#SOUND='-acodec libfaac -b:a 256k' #動く iPhone再生可
 
 #エンコード後のサイズ設定
 #SIZE='-s hb720'     #1280x720 なんか使えない

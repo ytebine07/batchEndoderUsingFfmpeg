@@ -12,10 +12,12 @@ DONE='./originalFile'           #変換後にオリジナル動画ファイル�
 TO_DIR='./enced/'             #変換された動画ファイル名の出力場所
                                 #最後に / をつけること。
 
+
 # 動作中を判定するファイルを作成する
 # ファイルの有る間は、動作をし続けることになる。
 `touch $DOING_FILE_NAME`
 `mkdir $DONE`
+`mkdir $TO_DIR`
 
 # 動作中判定ファイルが存在する間、このループを回り続ける
 while [ -e $DOING_FILE_NAME ]
