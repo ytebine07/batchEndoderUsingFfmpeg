@@ -63,7 +63,7 @@ OPTION=${THREAD}
 V_CODEC='-codec:v h264_qsv'
 
 # 動画ビットレート
-V_BITRATE='-b:v 15000k'
+V_BITRATE='-b:v 8192000'
 
 # Bフレーム
 B_FRAME='-bf 2' #youtubeは2を推奨
@@ -99,9 +99,14 @@ OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A
 #---------------------------
 # 動画変換コマンド作成
 #---------------------------
-COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -qscale 0 ${OUT_OPTION} ${OUTPUT_FILE}"
+#COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
+COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -i logo.png -filter_complex [1:v]lutyuv=a='val*0.2',[0:v]overlay=W-w:H-h ${OUT_OPTION} ${OUTPUT_FILE}"
+
 
 echo "[exec command]-----------------------"
 echo $COMMAND
 echo "-------------------------------------"
 eval $COMMAND
+
+
+sleep 10
