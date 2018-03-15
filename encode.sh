@@ -59,29 +59,29 @@ OPTION=${THREAD}
 
 
 
-#コーデック設定
-CODEC='-vcodec libx264'
+# 動画コーデック設定
+V_CODEC='-codec:v h264_qsv'
 
-#音声設定
-SOUND='-acodec ac3' #動く iPhoneで再生出来ない
-#SOUND='-acodec libfaac -b:a 128k' #動く iPhone再生可
-#SOUND='-acodec libfaac -b:a 256k' #動く iPhone再生可
+# 動画ビットレート
+V_BITRATE='-b:v 15000k'
+
+# Bフレーム
+B_FRAME='-bf 2' #youtubeは2を推奨
+
+# ピクセルフォーマット
+P_FMT='-pix_fmt yuv420p'
+
+# 音声設定
+A_CODEC='-acodec aac -strict experimental -b:a 384k -r:a 48000'
+
+# メタデータを明示的に先頭へすることで、再生を早める
+MOV_FLG='-movflags faststart'
 
 #エンコード後のサイズ設定
-#SIZE='-s hb720'     #1280x720 なんか使えない
-SIZE='-s ega'       #640x350
-SIZE='-s hd480'     #852x458
 SIZE=''             #オリジナルサイズのまま
 
-#ビットレートの設定
-BITRATE='-b:a 1000k'
-BITRATE='-b:a 2000k'
-BITRATE='-b:v 3000k'
-BITRATE='-b:v 4000k'
-BITRATE='-b:v 5000k'
-
 #フィルター設定
-FILTER='-vf "mp=eq=5:0"'          #明るさ調整
+#FILTER='-vf "mp=eq=5:0"'          #明るさ調整
 FILTER=''          #何もなければこれ
 
 #動画にテキストを入れる
@@ -95,12 +95,10 @@ FILTER=''          #何もなければこれ
 ##FILTER=$FILTER"," #複数指定の場合、カンマでつないで設定を書く
 #FILTER=$FILTER'"'
 
-OUT_OPTION="${FILTER} ${CODEC} ${BITRATE} ${SOUND} ${SIZE}"
+OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A_CODEC} ${SIZE} ${MOV_FLG}"
 #---------------------------
 # 動画変換コマンド作成
 #---------------------------
-#COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -i ./logo.jpg -filter_complex \"overlay=10:main_h-overlay_h-10\" ${OUT_OPTION} ${OUTPUT_FILE}"
-#COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -i ./logo.jpg -filter_complex \"overlay=main_w-overlay_w-10:main_h-overlay_h-10,${OUT_OPTION} ${OUTPUT_FILE}"
 COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -qscale 0 ${OUT_OPTION} ${OUTPUT_FILE}"
 
 echo "[exec command]-----------------------"
