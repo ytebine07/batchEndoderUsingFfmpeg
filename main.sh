@@ -16,22 +16,31 @@ TO_DIR='./enced/'             #変換された動画ファイル名の出力場�
 # 動作中を判定するファイルを作成する
 # ファイルの有る間は、動作をし続けることになる。
 `touch $DOING_FILE_NAME`
-`mkdir $DONE`
-`mkdir $TO_DIR`
+
+# オリジナルファイルの保存先作成
+if [ ! -d $DONE ]; then
+    `mkdir $DONE`
+fi
+
+# 変換後のファイルの保存先作成
+if [ ! -d $TO_DIR ]; then
+    `mkdir $TO_DIR`
+fi
+
 
 # 動作中判定ファイルが存在する間、このループを回り続ける
 while [ -e $DOING_FILE_NAME ]
 do
     # 未受付動画ファイルを受け付ける
     # ファイルの先頭に queue_ をつけることで受付を占めす
-    for FILE in `ls *MOV 2> /dev/null |grep -v queue|grep -v processing`
+    for FILE in `ls *MTS 2> /dev/null |grep -v queue|grep -v processing`
     do
         mv $FILE queue_$FILE
     done
 
     # 受け付けたファイルを1つずつエンコード
     # エンコード中のファイルは processing_ が先頭に付く
-    for FILE in `ls queue*MOV 2> /dev/null`
+    for FILE in `ls queue*MTS 2> /dev/null`
     do
         #定義系
         PROCESSING_FILE_NAME=`echo $FILE | sed -e "s/queue_/processing_/"`
@@ -43,7 +52,13 @@ do
         mv $FILE $PROCESSING_FILE_NAME
 
         #ココでエンコード
-        ./encode.sh ${PROCESSING_FILE_NAME} ${TO_DIR}
+	#たまに失敗するのでリトライする
+	NEXT_WAIT_TIME=0
+	until ./encode.sh ${PROCESSING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 4 ]; do
+           echo "RETRYING........${PROCESSING_FILE_NAME}"
+           rm ${TO_DIR}${PROCESSING_FILE_NAME_NO_EXT}.mp4
+	   sleep $(( NEXT_WAIT_TIME++ ))
+	done
 
         #元ファイルを置き場に移動
         mv $PROCESSING_FILE_NAME $DONE/$ORIGIN_FILE_NAME
@@ -52,6 +67,6 @@ do
         mv ${TO_DIR}${PROCESSING_FILE_NAME_NO_EXT}.mp4 ${TO_DIR}${ORIGIN_FILE_NAME_NO_EXT}.mp4
 
     done
-    echo "waiting"
+    echo "waiting(encoding)"
     sleep 1
 done
