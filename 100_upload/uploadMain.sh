@@ -62,7 +62,7 @@ do
         --tags="yoyo, yo-yo, ヨーヨー" \
         --category=Entertainment \
         --playlist="${CONTEST_NAME} ${SECTION_NAME} ${DIVISION_NAME}" \
-        --privacy private \
+        --privacy public  \
         --client-secrets=yoyovideoarchive.json \
         --credentials-file=.youtube-upload-credentials.json \
         ${PROCESSING_FILE_NAME}
