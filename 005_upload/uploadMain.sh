@@ -63,6 +63,8 @@ do
         --category=Entertainment \
         --playlist="${CONTEST_NAME} ${SECTION_NAME} ${DIVISION_NAME}" \
         --privacy private \
+        --client-secrets=yoyovideoarchive.json \
+        --credentials-file=.youtube-upload-credentials.json \
         ${PROCESSING_FILE_NAME}
 
         #元ファイルを、名前を元に戻しながらファイル置き場に移動
