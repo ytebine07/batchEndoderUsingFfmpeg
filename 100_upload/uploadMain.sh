@@ -58,13 +58,13 @@ do
         #ココでアップロード
         echo "UPLOADING... ----> ${UPLOADING_FILE_NAME}"
         youtube-upload --title="${TITLE_FOR_YOUTUBE}" \
-        --description="`cat ./description.txt`" \
+        --description="`cat ./conf/description.txt`" \
         --tags="yoyo, yo-yo, ヨーヨー" \
         --category=Entertainment \
         --playlist="${CONTEST_NAME} ${SECTION_NAME} ${DIVISION_NAME}" \
         --privacy public  \
-        --client-secrets=yoyovideoarchive.json \
-        --credentials-file=.youtube-upload-credentials.json \
+        --client-secrets=./conf/yoyovideoarchive.json \
+        --credentials-file=./conf/.youtube-upload-credentials.json \
         ${UPLOADING_FILE_NAME}
 
         #元ファイルを、名前を元に戻しながらファイル置き場に移動
