@@ -9,7 +9,7 @@
 #--------------------------------
 DOING_FILE_NAME='doing.txt'     #動作中を判断するファイル名
 DONE='./originalFile'           #変換後にオリジナル動画ファイルをしまう場所
-TO_DIR='./100_upload/'             #変換された動画ファイル名の出力場所
+TO_DIR='./100_upload/'          #変換された動画ファイル名の出力場所
                                 #最後に / をつけること。
 
 
@@ -33,38 +33,38 @@ while [ -e $DOING_FILE_NAME ]
 do
     # 未受付動画ファイルを受け付ける
     # ファイルの先頭に queue_ をつけることで受付を占めす
-    for FILE in `ls *MTS 2> /dev/null |grep -v queue|grep -v processing`
+    for FILE in `ls *MTS 2> /dev/null |grep -v queue|grep -v converting`
     do
         mv $FILE queue_$FILE
     done
 
     # 受け付けたファイルを1つずつエンコード
-    # エンコード中のファイルは processing_ が先頭に付く
+    # エンコード中のファイルは converting_ が先頭に付く
     for FILE in `ls queue*MTS 2> /dev/null`
     do
         #定義系
-        PROCESSING_FILE_NAME=`echo $FILE | sed -e "s/queue_/processing_/"`
-        PROCESSING_FILE_NAME_NO_EXT=${PROCESSING_FILE_NAME%.*}
-        ORIGIN_FILE_NAME=`echo $PROCESSING_FILE_NAME | sed -e "s/processing_//"`
+        CONVERTING_FILE_NAME=`echo $FILE | sed -e "s/queue_/converting_/"`
+        CONVERTING_FILE_NAME_NO_EXT=${CONVERTING_FILE_NAME%.*}
+        ORIGIN_FILE_NAME=`echo $CONVERTING_FILE_NAME | sed -e "s/converting_//"`
         ORIGIN_FILE_NAME_NO_EXT=${ORIGIN_FILE_NAME%.*}
 
         #変換中ファイル名に変更
-        mv $FILE $PROCESSING_FILE_NAME
+        mv $FILE $CONVERTING_FILE_NAME
 
         #ココでエンコード
         #たまに失敗するのでリトライする
         NEXT_WAIT_TIME=0
-        until ./encode.sh ${PROCESSING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 4 ]; do
-           echo "RETRYING........${PROCESSING_FILE_NAME}"
-           rm ${TO_DIR}${PROCESSING_FILE_NAME_NO_EXT}.mp4
+        until ./encode.sh ${CONVERTING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 4 ]; do
+           echo "RETRYING........${CONVERTING_FILE_NAME}"
+           rm ${TO_DIR}${CONVERTING_FILE_NAME_NO_EXT}.mp4
            sleep $(( NEXT_WAIT_TIME++ ))
         done
 
         #元ファイルを置き場に移動
-        mv $PROCESSING_FILE_NAME $DONE/$ORIGIN_FILE_NAME
+        mv $CONVERTING_FILE_NAME $DONE/$ORIGIN_FILE_NAME
 
         #エンコード後のファイル名を変更する
-        mv ${TO_DIR}${PROCESSING_FILE_NAME_NO_EXT}.mp4 ${TO_DIR}${ORIGIN_FILE_NAME_NO_EXT}.mp4
+        mv ${TO_DIR}${CONVERTING_FILE_NAME_NO_EXT}.mp4 ${TO_DIR}${ORIGIN_FILE_NAME_NO_EXT}.mp4
 
     done
     echo "waiting(encoding)"

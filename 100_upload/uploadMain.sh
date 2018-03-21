@@ -29,19 +29,19 @@ while [ -e $DOING_FILE_NAME ]
 do
     # 未受付動画ファイルを受け付ける
     # ファイルの先頭に queue_ をつけることで受付を占めす
-    for FILE in `ls *mp4 2> /dev/null |grep -v queue|grep -v processing`
+    for FILE in `ls *mp4 2> /dev/null |grep -v queue|grep -v uploading`
     do
         mv $FILE queue_$FILE
     done
 
     # 受け付けたファイルを1つずつエンコード
-    # エンコード中のファイルは processing_ が先頭に付く
+    # エンコード中のファイルは uploading_ が先頭に付く
     for FILE in `ls queue*mp4 2> /dev/null`
     do
         #定義系
-        PROCESSING_FILE_NAME=`echo $FILE | sed -e "s/queue_/processing_/"`
-        PROCESSING_FILE_NAME_NO_EXT=${PROCESSING_FILE_NAME%.*}
-        ORIGIN_FILE_NAME=`echo $PROCESSING_FILE_NAME | sed -e "s/processing_//"`
+        UPLOADING_FILE_NAME=`echo $FILE | sed -e "s/queue_/uploading_/"`
+        UPLOADING_FILE_NAME_NO_EXT=${UPLOADING_FILE_NAME%.*}
+        ORIGIN_FILE_NAME=`echo $UPLOADING_FILE_NAME | sed -e "s/uploading_//"`
         ORIGIN_FILE_NAME_NO_EXT=${ORIGIN_FILE_NAME%.*}
         TITLE_FOR_YOUTUBE=`echo ${ORIGIN_FILE_NAME_NO_EXT} | sed -e "s/_/ /g"`
         CONTEST_NAME=`echo $FILE | awk 'BEGIN{FS="_"}{print $2}'`
@@ -50,13 +50,13 @@ do
 
 
         #変換中ファイル名に変更
-        mv $FILE $PROCESSING_FILE_NAME
+        mv $FILE $UPLOADING_FILE_NAME
 
 
         echo ${CONTEST_NAME} ${SECTION_NAME} ${DIVISION_NAME}
 
         #ココでアップロード
-        echo "UPLOADING... ----> ${PROCESSING_FILE_NAME}"
+        echo "UPLOADING... ----> ${UPLOADING_FILE_NAME}"
         youtube-upload --title="${TITLE_FOR_YOUTUBE}" \
         --description="`cat ./description.txt`" \
         --tags="yoyo, yo-yo, ヨーヨー" \
@@ -65,10 +65,10 @@ do
         --privacy public  \
         --client-secrets=yoyovideoarchive.json \
         --credentials-file=.youtube-upload-credentials.json \
-        ${PROCESSING_FILE_NAME}
+        ${UPLOADING_FILE_NAME}
 
         #元ファイルを、名前を元に戻しながらファイル置き場に移動
-        mv $PROCESSING_FILE_NAME ${TO_DIR}/$ORIGIN_FILE_NAME
+        mv $UPLOADING_FILE_NAME ${TO_DIR}/$ORIGIN_FILE_NAME
 
     done
     echo "waiting(upload)"
