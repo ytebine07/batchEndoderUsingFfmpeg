@@ -52,13 +52,13 @@ do
         mv $FILE $PROCESSING_FILE_NAME
 
         #ココでエンコード
-	#たまに失敗するのでリトライする
-	NEXT_WAIT_TIME=0
-	until ./encode.sh ${PROCESSING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 4 ]; do
+        #たまに失敗するのでリトライする
+        NEXT_WAIT_TIME=0
+        until ./encode.sh ${PROCESSING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 4 ]; do
            echo "RETRYING........${PROCESSING_FILE_NAME}"
            rm ${TO_DIR}${PROCESSING_FILE_NAME_NO_EXT}.mp4
-	   sleep $(( NEXT_WAIT_TIME++ ))
-	done
+           sleep $(( NEXT_WAIT_TIME++ ))
+        done
 
         #元ファイルを置き場に移動
         mv $PROCESSING_FILE_NAME $DONE/$ORIGIN_FILE_NAME

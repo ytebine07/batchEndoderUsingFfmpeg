@@ -53,7 +53,7 @@ do
         mv $FILE $PROCESSING_FILE_NAME
 
 
-	echo ${CONTEST_NAME} ${SECTION_NAME} ${DIVISION_NAME}
+        echo ${CONTEST_NAME} ${SECTION_NAME} ${DIVISION_NAME}
 
         #ココでアップロード
         echo "UPLOADING... ----> ${PROCESSING_FILE_NAME}"
