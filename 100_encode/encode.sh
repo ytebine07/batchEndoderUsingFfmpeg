@@ -51,13 +51,9 @@ OUTPUT_FILE=$OUTPUT_DIR/$FILENAME.mp4
 # threads設定
 # CPUに合わせて設定すると早くなるかも
 # H.264の場合0を指定すると、コーデック側でCPU*1.5の並列処理を行うらしい。
-THREAD='-threads 2' #動かない
-THREAD='-threads 0'
 THREAD=''
 
 OPTION=${THREAD}
-
-
 
 # 動画コーデック設定
 V_CODEC='-codec:v h264_qsv'
@@ -99,8 +95,19 @@ OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A
 #---------------------------
 # 動画変換コマンド作成
 #---------------------------
-COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
-#COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} -i logo.png -filter_complex [1:v]lutyuv=a='val*0.2',[0:v]overlay=W-w:H-h ${OUT_OPTION} ${OUTPUT_FILE}"
+#COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
+COMMAND="${FFMPEG} \
+${OPTION} \
+-i ${INPUT_FILE} \
+-i ./conf/2018jn-400.png \
+-i ./conf/l2.png \
+-filter_complex \"\
+[1:v]lutyuv=a='val*0.5' [2018jn]; \
+[2:v]lutyuv=a='val*0.5',scale=120x120 [yoyovideoarchive]; \
+[0:v][2018jn]overlay=50:50 [tmp1]; \
+[tmp1][yoyovideoarchive]overlay=W-w-30:H-h-30\"                              \
+${OUT_OPTION} \
+${OUTPUT_FILE}"
 
 
 echo "[exec command]-----------------------"

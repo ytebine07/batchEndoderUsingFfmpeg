@@ -9,8 +9,10 @@
 #--------------------------------
 DOING_FILE_NAME='doing.txt'     #動作中を判断するファイル名
 DONE='./originalFile'           #変換後にオリジナル動画ファイルをしまう場所
-TO_DIR='./100_upload/'          #変換された動画ファイル名の出力場所
+#TO_DIR='./100_upload/'          #変換された動画ファイル名の出力場所
                                 #最後に / をつけること。
+
+TO_DIR='./enqed/'          #変換された動画ファイル名の出力場所
 
 
 # 動作中を判定するファイルを作成する
@@ -54,7 +56,7 @@ do
         #ココでエンコード
         #たまに失敗するのでリトライする
         NEXT_WAIT_TIME=0
-        until ./encode.sh ${CONVERTING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 4 ]; do
+        until ./encode.sh ${CONVERTING_FILE_NAME} ${TO_DIR} || [ $NEXT_WAIT_TIME -eq 100 ]; do
            echo "RETRYING........${CONVERTING_FILE_NAME}"
            rm ${TO_DIR}${CONVERTING_FILE_NAME_NO_EXT}.mp4
            sleep $(( NEXT_WAIT_TIME++ ))
