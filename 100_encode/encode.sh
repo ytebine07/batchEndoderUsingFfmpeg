@@ -100,12 +100,12 @@ COMMAND="${FFMPEG} \
 ${OPTION} \
 -i ${INPUT_FILE} \
 -i ./conf/2018jn-400.png \
--i ./conf/l2.png \
+-i ./conf/yva-250.png \
 -filter_complex \"\
 [1:v]lutyuv=a='val*0.5' [2018jn]; \
-[2:v]lutyuv=a='val*0.5',scale=120x120 [yoyovideoarchive]; \
+[2:v]lutyuv=a='val*0.4',scale=90x90 [yoyovideoarchive]; \
 [0:v][2018jn]overlay=50:50 [tmp1]; \
-[tmp1][yoyovideoarchive]overlay=W-w-30:H-h-30\"                              \
+[tmp1][yoyovideoarchive]overlay=W-w-80:H-h-80\"                              \
 ${OUT_OPTION} \
 ${OUTPUT_FILE}"
 
