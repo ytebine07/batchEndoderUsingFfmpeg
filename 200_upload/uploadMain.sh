@@ -2,9 +2,13 @@
 #--------------------------------
 #   動画をyoutubeへアップロードするツール#
 #--------------------------------
-DOING_FILE_NAME='doing.txt'     #動作中を判断するファイル名
-TO_DIR='./originalFile/'               #変換された動画ファイル名の出力場所
-                                #最後に / をつけること。
+
+#動作中を判断するファイル名
+DOING_FILE_NAME='doing.txt'
+
+#アップロード後のファイルの移動場所
+#最後に / をつけること。
+TO_DIR='./originalFile/'
 
 # 多重起動防止
 if [ -e $DOING_FILE_NAME ]; then
@@ -12,7 +16,6 @@ if [ -e $DOING_FILE_NAME ]; then
     sleep 10
     exit 1
 fi
-
 
 # 動作中を判定するファイルを作成する
 # ファイルの有る間は、動作をし続けることになる。
@@ -23,6 +26,13 @@ fi
 if [ ! -d $TO_DIR ]; then
     `mkdir $TO_DIR`
 fi
+
+# プログラム終了されたときに「作業中ファイル」を削除する
+trap 'stopScript' 1 2 3 15 
+function stopScript(){
+    rm $DOING_FILE_NAME
+    exit $?
+}
 
 # 動作中判定ファイルが存在する間、このループを回り続ける
 while [ -e $DOING_FILE_NAME ]
