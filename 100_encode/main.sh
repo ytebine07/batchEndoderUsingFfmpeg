@@ -8,7 +8,6 @@
 #   それを見つけ、変換する作りのはず。
 
 #--------------------------------
-
 #動作中を判断するファイル名
 DOING_FILE_NAME='doing.txt'
 
@@ -35,6 +34,12 @@ if [ ! -d $TO_DIR ]; then
     `mkdir $TO_DIR`
 fi
 
+# プログラム終了されたときに「作業中ファイル」を削除する
+trap 'stopScript' 1 2 3 15 
+function stopScript(){
+    rm $DOING_FILE_NAME
+    exit $?
+}
 
 # 動作中判定ファイルが存在する間、このループを回り続ける
 while [ -e $DOING_FILE_NAME ]
@@ -90,3 +95,6 @@ do
         sleep 1
         clear
 done
+
+
+
