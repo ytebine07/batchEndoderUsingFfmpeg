@@ -110,7 +110,7 @@ do
             SECTION_NAME=`echo $FILE | awk 'BEGIN{FS="_"}{print $4}'`
 
             #変換中ファイル名に変更
-            mv $FILE $UPLOADING_FILE_NAME
+            mv "$FILE" "$UPLOADING_FILE_NAME"
 
             #ココでアップロード
             echo "UPLOADING... ----> ${UPLOADING_FILE_NAME}"
@@ -133,12 +133,11 @@ do
             eval $COMMAND
 
             # 元ファイルを、名前を元に戻しながらファイル置き場に移動
-            mv $UPLOADING_FILE_NAME ${TO_DIR}/$ORIGIN_FILE_NAME
+            mv "$UPLOADING_FILE_NAME" "${TO_DIR}/$ORIGIN_FILE_NAME"
         fi
 
     done
         # シェルは起動しているが、処理すべきファイルがない場合
         echo "waiting(uploading) - `date "+%Y/%m/%d-%H:%M:%S"`"
         sleep 1
-        clear
 done
