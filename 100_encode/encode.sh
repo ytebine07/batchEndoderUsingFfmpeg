@@ -21,7 +21,7 @@ if [ $# -ne 2 ];then
 fi
 
 # input_fileの存在チェック
-if [ ! -e $1 ];then
+if [ ! -e "$1" ];then
     echo "\narg1($1) is not a FILE!!\n"
     echo $HOWTOUSE
     exit 1
@@ -35,15 +35,17 @@ if [ ! -d $2 ];then
 fi
 
 #ココまで来れば引数を変数に代入
-INPUT_FILE=$1
+INPUT_FILE="$1"
 FILENAME_WITH_EXT=${INPUT_FILE##*/}
 FILENAME=${FILENAME_WITH_EXT%.*}
 OUTPUT_DIR=$2
 OUTPUT_FILE=$OUTPUT_DIR/$FILENAME.mp4
 
+#echo "$INPUT_FILE"
 #echo $FILENAME
 #echo $OUTPUT_FILE
 #exit 0
+
 #---------------------------
 # 動画変換オプション設定
 #---------------------------
@@ -98,7 +100,7 @@ OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A
 #COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
 COMMAND="${FFMPEG} \
 ${OPTION} \
--i ${INPUT_FILE} \
+-i \"${INPUT_FILE}\" \
 -i ./conf/2018jn-400.png \
 -i ./conf/yva-250.png \
 -filter_complex \"\
@@ -107,7 +109,7 @@ ${OPTION} \
 [0:v][2018jn]overlay=50:50 [tmp1]; \
 [tmp1][yoyovideoarchive]overlay=W-w-80:H-h-80\"                              \
 ${OUT_OPTION} \
-${OUTPUT_FILE}"
+\"${OUTPUT_FILE}\""
 
 
 echo "[exec command]-----------------------"
