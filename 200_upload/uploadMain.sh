@@ -30,10 +30,10 @@ if [[ ! -d $CONF_DEV_DIR && ! -d $CONF_PROD_DIR ]]; then
     exit 1
 fi
 
-
+# 本番公開用設定
 if [ -d $CONF_PROD_DIR ]; then
 
-    # 限定公開
+    # 公開
     PRIVACY='public'
 
     CLIENT_SECRETS='./conf/prod/yoyovideoarchive.json'
@@ -41,18 +41,26 @@ if [ -d $CONF_PROD_DIR ]; then
 
 fi
 
-
 # 開発環境があれば、それで上書き
 if [ -d $CONF_DEV_DIR ]; then
 
     # 限定公開
-    PRIVACY='private'
+    PRIVACY='unlisted'
 
     CLIENT_SECRETS='./conf/dev/client_secrets.json'
     CREDENTIALS_FILE='./conf/dev/.youtube-upload-credentials.json'
 
 fi
 
+# 設定ファイルが読み込めていなかったら異常終了
+if [[ ! -e $CLIENT_SECRETS || ! -e $CREDENTIALS_FILE ]]; then
+
+    echo "youtubeへアップロードするのに必要な設定ファイルが読み込めていません"
+    echo "client_secrets.json と credentials.jsonが配置されていることを確認してください"
+    sleep 10
+    exit 1
+
+fi
 
 # 動作中を判定するファイルを作成する
 # ファイルの有る間は、動作をし続けることになる。
