@@ -130,7 +130,14 @@ do
             echo "[exec command]-----------------------"
             echo $COMMAND
             echo "-------------------------------------"
-            eval $COMMAND
+           
+            # ココでアップロード
+            # 失敗したときのためにリトライ処理
+            NEXT_WAIT_TIME=0
+            until eval $COMMAND || [ $NEXT_WAIT_TIME -eq 100 ]; do
+               echo "RETRYING........${$COMMAND}"
+               sleep $(( NEXT_WAIT_TIME++ ))
+            done
 
             # 元ファイルを、名前を元に戻しながらファイル置き場に移動
             mv "$UPLOADING_FILE_NAME" "${TO_DIR}/$ORIGIN_FILE_NAME"
