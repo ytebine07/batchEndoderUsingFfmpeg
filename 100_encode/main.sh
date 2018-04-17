@@ -93,7 +93,7 @@ do
         # シェルは起動しているが、処理すべきファイルがない場合
         echo "waiting(encoding) - `date "+%Y/%m/%d-%H:%M:%S"`"
         sleep 1
-        clear
+        #clear
 done
 
 

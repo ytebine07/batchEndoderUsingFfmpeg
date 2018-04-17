@@ -82,35 +82,55 @@ SIZE=''             #オリジナルサイズのまま
 #FILTER='-vf "mp=eq=5:0"'          #明るさ調整
 FILTER=''          #何もなければこれ
 
-#動画にテキストを入れる
-#FILTER='-vf '
-#FILTER=$FILTER'"drawtext='
-##FILTER=$FILTER'drawtext='
-#FILTER=$FILTER'fontfile=/Library/Fonts/Arial\ Bold.ttf'
-#FILTER=$FILTER':fontcolor=ffffff@0.5'  #@で透過率設定
-#FILTER=$FILTER":text='2013JN 1A Semifinal Reiki Sekiya'"
-#FILTER=$FILTER":fontsize=30:x=20:y=20"
-##FILTER=$FILTER"," #複数指定の場合、カンマでつないで設定を書く
-#FILTER=$FILTER'"'
-
 OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A_CODEC} ${SIZE} ${MOV_FLG}"
 #---------------------------
 # 動画変換コマンド作成
 #---------------------------
-#COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
-COMMAND="${FFMPEG} \
-${OPTION} \
--i \"${INPUT_FILE}\" \
--i ./conf/2018jn-400.png \
--i ./conf/yva-250.png \
--filter_complex \"\
-[1:v]lutyuv=a='val*0.5' [2018jn]; \
-[2:v]lutyuv=a='val*0.4',scale=90x90 [yoyovideoarchive]; \
-[0:v][2018jn]overlay=50:50 [tmp1]; \
-[tmp1][yoyovideoarchive]overlay=W-w-80:H-h-80\"                              \
-${OUT_OPTION} \
-\"${OUTPUT_FILE}\""
+# 映像変換のみ
+COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
 
+# 映像に画像をのせる
+#COMMAND="${FFMPEG} \
+#${OPTION} \
+#-i \"${INPUT_FILE}\" \
+#-i ./conf/2018jn-400.png \
+#-i ./conf/yva-250.png \
+#-filter_complex \"\
+#[1:v]lutyuv=a='val*0.5' [2018jn]; \
+#[2:v]lutyuv=a='val*0.4',scale=90x90 [yoyovideoarchive]; \
+#[0:v][2018jn]overlay=50:50 [tmp1]; \
+#[tmp1][yoyovideoarchive]overlay=W-w-80:H-h-80\"                              \
+#${OUT_OPTION} \
+#\"${OUTPUT_FILE}\""
+
+
+# 映像に画像とテキストをのせる
+#COMMAND="${FFMPEG} \
+#${OPTION} \
+#-i \"${INPUT_FILE}\" \
+#-i ./conf/2018jn-400.png \
+#-i ./conf/yva-250.png \
+#-filter_complex \"\
+#[1:v]lutyuv=a='val*0.80' [2018jn]; \
+#[2:v]lutyuv=a='val*0.80',scale=90x90 [yoyovideoarchive]; \
+#[0:v][2018jn]overlay=50:50 [tmp1]; \
+#[tmp1][yoyovideoarchive]overlay=W-w-40:H-h-40, \
+#drawtext=fontfile=\'C:/windows/fonts/calibriz.ttf\':fontcolor=#ffffff@0.95:shadowx=2:shadowy=2:fontsize=60:x=20:y=H-80:text=\'Toya Kobayashi\' \
+#\" \
+#${OUT_OPTION} \
+#\"${OUTPUT_FILE}\""
+
+
+# 映像にテキストをのせる
+#COMMAND="${FFMPEG} \
+#${OPTION} \
+#-i \"${INPUT_FILE}\" \
+#-i ./conf/2018jn-400.png \
+#-i ./conf/yva-250.png \
+#-filter_complex \"\
+#drawtext=fontfile=\'C:/windows/fonts/ARISAKA_fix.ttf\':fontcolor=#ffffff@0.4:fontsize=100:x=100:y=200:text=\'Toya Kobayashi\' \" \
+#${OUT_OPTION} \
+#\"${OUTPUT_FILE}\""
 
 echo "[exec command]-----------------------"
 echo $COMMAND
