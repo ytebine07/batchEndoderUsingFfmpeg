@@ -2,6 +2,7 @@ doing.txt
 *MTS
 *mp4
 200_upload/conf/dev
+200_upload/conf/dev_bk
 200_upload/conf/prod
 yoyovideoarchive.json
 .youtube-upload-credentials.json
