@@ -91,7 +91,7 @@ do
     do
         # 未受付動画ファイルを受け付ける
         # ファイルの先頭に queue_ をつけることで受付を示す
-        if [[ -e "$FILE" && ! "$FILE" =~ queue|uploading ]] ;
+        if [[ -e "$FILE" && ! "$FILE" =~ converting|queue|uploading ]] ;
         then
             mv "$FILE" "queue_$FILE"
         fi;

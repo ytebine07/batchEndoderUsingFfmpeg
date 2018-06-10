@@ -16,8 +16,8 @@ DONE='./originalFile'
 
 #変換された動画ファイル名の出力場所
 #最後に / をつけること。
-#TO_DIR='../200_upload/'
-TO_DIR='./enqed/'
+TO_DIR='../200_upload/'
+#TO_DIR='./enqed/'
 
 
 # 動作中を判定するファイルを作成する
