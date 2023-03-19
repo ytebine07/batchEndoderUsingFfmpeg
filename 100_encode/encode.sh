@@ -83,7 +83,8 @@ MOV_FLG='-movflags faststart'
 SIZE=''             #オリジナルサイズのまま
 
 #フィルター設定
-#FILTER='-vf "mp=eq=5:0"'          #明るさ調整
+#FILTER='-vf eq=brightness=0.15'       # 明るさ調整(明るくする)
+#FILTER='-vf eq=brightness=-0.1'       # 明るさ調整(暗くする)
 FILTER=''          #何もなければこれ
 
 OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A_CODEC} ${SIZE} ${MOV_FLG}"
