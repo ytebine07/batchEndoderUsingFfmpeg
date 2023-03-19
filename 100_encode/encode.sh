@@ -48,6 +48,9 @@ OUTPUT_FILE=$OUTPUT_DIR/$FILENAME.mp4
 
 #---------------------------
 # 動画変換オプション設定
+#
+# youtubeの定める動画フォーマットに則っています
+# https://support.google.com/youtube/answer/1722171
 #---------------------------
 
 # threads設定
@@ -61,7 +64,8 @@ OPTION=${THREAD}
 V_CODEC='-codec:v h264_qsv'
 
 # 動画ビットレート
-V_BITRATE='-b:v 8192000'
+#V_BITRATE='-b:v 8192000'
+V_BITRATE='-b:v 12M'
 
 # Bフレーム
 B_FRAME='-bf 2' #youtubeは2を推奨
