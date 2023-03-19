@@ -80,6 +80,7 @@ do
                echo "RETRYING........${CONVERTING_FILE_NAME}"
                rm "${TO_DIR}${CONVERTING_FILE_NAME_NO_EXT}.mp4"
                sleep $(( NEXT_WAIT_TIME++ ))
+               echo "デデンネ！"
             done
 
             #元ファイルを置き場に移動
