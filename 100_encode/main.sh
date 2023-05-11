@@ -1,4 +1,5 @@
 #/bin/bash
+set +o history
 #--------------------------------
 #   ヨーヨー動画変換シェル
 #
@@ -6,7 +7,6 @@
 #   起動時に同一ディレクトリにあるMOVファイル一覧を取得し、
 #   1個ずつ変換していくが、途中で追加されたファイルが有ったら、
 #   それを見つけ、変換する作りのはず。
-
 #--------------------------------
 #動作中を判断するファイル名
 DOING_FILE_NAME='doing.txt'
@@ -51,8 +51,13 @@ do
     #   for文の引数を`ls *FILENAME | grep -v hogehgoe`にした場合、
     #   ファイル名に空白が入っていた場合、どうしても空白で分けられて渡されてしまうので、
     #   このような記法になっています。
-    for FILE in *MTS
+    for FILE in *.{MP4,MTS,MXF}
     do
+        # .mp4 ファイルは除外
+        if [[ "$FILE" == *".mp4" ]]; then
+            continue
+        fi
+
         # 未受付動画ファイルを受け付ける
         # ファイルの先頭に queue_ をつけることで受付を示す
         if [[ -e "$FILE" && ! "$FILE" =~ queue|converting ]] ;
@@ -80,6 +85,7 @@ do
                echo "RETRYING........${CONVERTING_FILE_NAME}"
                rm "${TO_DIR}${CONVERTING_FILE_NAME_NO_EXT}.mp4"
                sleep $(( NEXT_WAIT_TIME++ ))
+               echo "デデンネ！"
             done
 
             #元ファイルを置き場に移動

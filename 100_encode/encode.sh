@@ -39,7 +39,7 @@ INPUT_FILE="$1"
 FILENAME_WITH_EXT=${INPUT_FILE##*/}
 FILENAME=${FILENAME_WITH_EXT%.*}
 OUTPUT_DIR=$2
-OUTPUT_FILE=$OUTPUT_DIR/$FILENAME.mp4
+OUTPUT_FILE=$OUTPUT_DIR\"$FILENAME.mp4\"
 
 #echo "$INPUT_FILE"
 #echo $FILENAME
@@ -48,6 +48,9 @@ OUTPUT_FILE=$OUTPUT_DIR/$FILENAME.mp4
 
 #---------------------------
 # 動画変換オプション設定
+#
+# youtubeの定める動画フォーマットに則っています
+# https://support.google.com/youtube/answer/1722171
 #---------------------------
 
 # threads設定
@@ -61,7 +64,8 @@ OPTION=${THREAD}
 V_CODEC='-codec:v h264_qsv'
 
 # 動画ビットレート
-V_BITRATE='-b:v 8192000'
+#V_BITRATE='-b:v 8192000'
+V_BITRATE='-b:v 12M'
 
 # Bフレーム
 B_FRAME='-bf 2' #youtubeは2を推奨
@@ -79,7 +83,8 @@ MOV_FLG='-movflags faststart'
 SIZE=''             #オリジナルサイズのまま
 
 #フィルター設定
-#FILTER='-vf "mp=eq=5:0"'          #明るさ調整
+#FILTER='-vf eq=brightness=0.15'       # 明るさ調整(明るくする)
+#FILTER='-vf eq=brightness=-0.1'       # 明るさ調整(暗くする)
 FILTER=''          #何もなければこれ
 
 OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A_CODEC} ${SIZE} ${MOV_FLG}"
@@ -87,7 +92,7 @@ OUT_OPTION="${FILTER} ${V_CODEC} ${V_BITRATE} ${B_FRAME} ${BITRATE} ${P_FMT} ${A
 # 動画変換コマンド作成
 #---------------------------
 # 映像変換のみ
-COMMAND="${FFMPEG} ${OPTION} -i ${INPUT_FILE} ${OUT_OPTION} ${OUTPUT_FILE}"
+COMMAND="${FFMPEG} ${OPTION} -i \"${INPUT_FILE}\" ${OUT_OPTION} ${OUTPUT_FILE}"
 
 # 映像に画像をのせる
 #COMMAND="${FFMPEG} \
