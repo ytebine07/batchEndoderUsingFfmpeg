@@ -51,6 +51,7 @@ do
     #   for文の引数を`ls *FILENAME | grep -v hogehgoe`にした場合、
     #   ファイル名に空白が入っていた場合、どうしても空白で分けられて渡されてしまうので、
     #   このような記法になっています。
+
     for FILE in *.{MP4,MTS,MXF}
     do
         # .mp4 ファイルは除外
